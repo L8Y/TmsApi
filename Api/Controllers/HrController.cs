@@ -1,22 +1,27 @@
+using Api.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class HrController : Controller
+    public class HrController : ControllerBase
     {
-        training_management_systemContext tms = new training_management_systemContext();
+        private readonly IHr _hrServices;
+        public HrController(IHr HrServices)
+        {
+            _hrServices = HrServices;
+        }
          [HttpGet]
         public IEnumerable<Hr> Get()
         {
-            return tms.Hrs;
+            return _hrServices.GetHrDetails();
         }
 
         [HttpGet("{id}")]
         public IEnumerable<Hr> Get(int id)
         {
-            return tms.Hrs.Where(hr => hr.Id == id);    
+            return _hrServices.GeTHrDetailsById(id);    
         }
+
     }
 }
